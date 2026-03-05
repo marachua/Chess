@@ -1,8 +1,9 @@
 import tkinter as tk
-from gameController import GameController
+from controllers.game_controller import GameController
 
 class ChessBoardGUI:
-    def __init__(self, parent, controller: GameController):
+    def __init__(self, parent, controller: GameController, board):
+        self.board = board
         self.parent = parent
         self.controller = controller
         self.size_board = 500
@@ -10,9 +11,9 @@ class ChessBoardGUI:
         self.canvas_board = tk.Canvas(parent, bg="#FFFFFF", width=self.size_board, height=self.size_board)
         self.canvas_board.pack()
         self.create_board()
-        
+
         self.canvas_board.bind("<Motion>", self.on_mouse_move)
-        self.canvas_board.bind("Button-1", self.on_cell_clicked)
+        self.canvas_board.bind("<Button-1>", self.on_cell_clicked)
     
     def create_board(self):
         colors = ["#E5E2E2", "#5D5A5A"]
@@ -27,6 +28,12 @@ class ChessBoardGUI:
                 color_index = (row + col) % 2
                 color = colors[color_index]
                 self.canvas_board.create_rectangle(x0, y0, x1, y1, fill=color, outline="#ABABAB")
+            
+    def draw_pieces(self):
+        pieces = self.board.get_pieces()
+        for piece in pieces:
+            row, col = piece.get_coords()
+            self.canvas_board.create_oval(row, col, row + self.cell_size, col + self.cell_size, fill=piece.get_color())
 
     def display_start_position_pieces(self):
         pass
@@ -42,9 +49,8 @@ class ChessBoardGUI:
             self.controller.on_cell_clicked(row, col)
 
     def get_cell_from_coords(self, x, y):
-        print(f"{x} , {y}")
         if 0 <= x < self.size_board and 0 <= y < self.size_board:
-            row = int(y // self.size_board)
-            col = int(x // self.size_board)
+            row = int(y // self.cell_size)
+            col = int(x // self.cell_size)
             return row, col
         return None, None

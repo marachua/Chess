@@ -5,21 +5,20 @@ from models.board import Board
 
 class MainWindow:
 
-    def __init__(self, controller: GameController, board: Board):
+    def __init__(self, controller: GameController):
         self.controller = controller
-        self.board = board
         self.root = tk.Tk()
         self.root.geometry("550x550")
-        self.chess_board_gui = ChessBoardGUI(parent=self.root, controller=self.controller, board=self.board)
+        self.chess_board_gui = ChessBoardGUI(parent=self.root, controller=self.controller, board=self.controller.board)
     
     def run(self):
         self.root.mainloop()
 
 class App:
     def __init__(self):
-        self.game_controller = GameController()
         #self.game =
         self.board = Board()
+        self.game_controller = GameController(self.board)
         self.main_window = MainWindow(self.game_controller, self.board)
         
     def run(self):

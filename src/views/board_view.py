@@ -2,6 +2,7 @@ import tkinter as tk
 from controllers.game_controller import GameController
 from models.board import Board
 
+
 class ChessBoardGUI:
     def __init__(self, parent, controller: GameController, board: Board):
         self.board = board

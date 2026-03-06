@@ -13,15 +13,17 @@ class Board:
     def get_pieces(self) -> list[Piece]:
         return self.pieces.values()
     
-    def is_ligal_move(self):
-        pass
+    def is_ligal_move(self, to_pose):
+        # пока только проверка есть ли кто на клетке
+        return self.is_on_cell_piece(to_pose)
 
     def move_piece(self, from_pose: tuple, to_pose: tuple):
         piece: Piece = self.pieces.get(from_pose)
         if not piece:
             return False
         
-        #if not self.is_ligal_move()
+        if self.is_ligal_move(to_pose):
+            return False
 
         del self.pieces[from_pose]
         row, col = to_pose
@@ -29,8 +31,8 @@ class Board:
         piece.set_coords(to_pose)
         return True
 
-    def is_on_cell_piece(self, row, col):
-        if self.pieces.get((row, col)):
+    def is_on_cell_piece(self, coords: tuple):
+        if self.pieces.get(coords):
             return True
         return False
     

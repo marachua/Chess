@@ -1,14 +1,16 @@
-from models.piece import Piece
+from models.piece import Piece, Pawn, Queen, King
 
 class Board:
     def __init__(self):
         #key = (row, col): item = piece
         self.pieces = {}
-        example_piece_1 = Piece(0, 0, "white")
-        example_piece_2 = Piece(5, 4, "black")
+        black_pawn = Pawn(0, 0, "black", "pawn")
+        white_queen = Queen(5, 4, "white", "queen")
+        white_king = King(2, 4, "white", "king")
 
-        self.pieces[(example_piece_1.row, example_piece_1.col)] = example_piece_1
-        self.pieces[(example_piece_2.row, example_piece_2.col)] = example_piece_2
+        self.pieces[(black_pawn.get_coords())] = black_pawn
+        self.pieces[(white_king.get_coords())] = white_king
+        self.pieces[(white_queen.get_coords())] = white_queen
 
     def get_pieces(self) -> list[Piece]:
         return self.pieces.values()

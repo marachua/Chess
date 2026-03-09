@@ -16,11 +16,18 @@ class GameController():
         if self.selected_pos is None:
             if self.board.is_on_cell_piece((row, col)): 
                 self.selected_pos = (row, col)
+                self.view.create_board((row, col))
+                self.view.draw_pieces()
         else:
             success = self.board.move_piece(self.selected_pos, (row, col))
             if success:
+                self.view.create_board()
                 self.view.draw_pieces()
             self.selected_pos = None
+            self.view.create_board()
+            self.view.draw_pieces()
+ 
+
 
     
         

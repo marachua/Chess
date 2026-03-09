@@ -1,9 +1,10 @@
 import tkinter as tk
+
 from views.board_view import ChessBoardGUI
 from controllers.game_controller import GameController
 from models.board import Board
+
 from PIL import Image, ImageTk
-import cairosvg
 
 class MainWindow:
 

@@ -2,6 +2,11 @@ import tkinter as tk
 from controllers.game_controller import GameController
 from models.board import Board
 
+import os
+import cairosvg
+from io import BytesIO
+from PIL import Image, ImageTk
+
 
 class ChessBoardGUI:
     def __init__(self, parent, controller: GameController, board: Board):
@@ -14,8 +19,10 @@ class ChessBoardGUI:
         self.cell_size = self.size_board / 8
         self.canvas_board = tk.Canvas(parent, bg="#FFFFFF", width=self.size_board, height=self.size_board)
         self.canvas_board.pack()
+        self.pieces_images = {}
         self.create_board()
         self.draw_pieces()
+        self.load_piece_images()
 
         self.canvas_board.bind("<Motion>", self.on_mouse_move)
         self.canvas_board.bind("<Button-1>", self.on_cell_clicked)
@@ -33,6 +40,41 @@ class ChessBoardGUI:
                 color_index = (row + col) % 2
                 color = colors[color_index]
                 self.canvas_board.create_rectangle(x0, y0, x1, y1, fill=color, outline="#ABABAB")
+        
+    def load_piece_images(self):
+        colors = ["white", "black"]
+        piece_types = ["king", "queen", "rook", "bishop", "knight", "pawn"]
+
+        current_file = os.path.abspath(__file__)
+        current_dir = os.path.dirname(current_file)
+        project_root = os.path.dirname(os.path.dirname(current_dir))
+        image_gir = os.path.join(project_root, 'resources', 'pieces')
+
+        for color in colors:
+            for type_piece in piece_types:
+                file_name = f"{color}_{type_piece}.svg"
+                filepath = os.path.join(image_gir, file_name)
+
+                if not os.path.exists(filepath):
+                    print("файл не найден - load_piece_images")
+                    continue
+
+                out = BytesIO()
+                cairosvg.svg2png(url=filepath, 
+                                 write_to=out, 
+                                 output_height=int(self.cell_size), 
+                                 output_width=int(self.cell_size))
+                out.seek(0)
+                image = image.open(out)
+
+                photo = ImageTk.PhotoImage(image)
+                key = f"{color}_{type_piece}"
+
+                self.pieces_images[key]=photo
+        
+
+        print("adada")
+        print(self.pieces_images)
 
     def draw_pieces(self):
         self.canvas_board.delete("piece") # удаление всех фигур с тегом piece

@@ -88,6 +88,8 @@ class ChessBoardGUI:
             fill_color = "white" if piece.get_color() == "white" else "black"
 
             image = self.pieces_images.get(f"{fill_color}_{piece.get_name()}")
+            print(self.pieces_images)
+            print(image)
 
             self.canvas_board.create_image(x0, y0, image=image, tag="piece")
             #self.canvas_board.create_oval(x0 ,y0, x1, y1, fill=fill_color, tags="piece")
